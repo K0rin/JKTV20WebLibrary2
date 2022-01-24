@@ -24,7 +24,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="addBook">Добавить книгу</a>
+              <a class="nav-link active" aria-current="page" href="addBook.jsp">Добавить книгу</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Link</a>
@@ -52,21 +52,40 @@
       </div>
     </nav>
     <div class="container d-flex justify-content-center">
-      <c:forEach var="book" items="${books}">
-          
-        <div class="card border-light mb-3" style="max-width: 20rem;">
-            <div class="card-header">${book.caption}</div>
+        <div class="card border-light my-5" style="width: 30rem;">
             <div class="card-body">
-              <h4 class="card-title">
-                <c:forEach var="author" items="${book.authors}">
-                    ${author.name} ${author.lastname}. ${author.year}.&nbsp;
-                </c:forEach>
-              </h4>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <form action="createBook" method="POST">
+                    <fieldset>
+                      <legend>Добавление книги</legend>
+                      <div class="form-group mb-3">
+                        <label for="caption">Название книги</label>
+                        <input type="text" class="form-control" id="caption" name="caption" aria-describedby="caption" placeholder="">
+                        <small id="caption" class="form-text text-muted d-none">Это поле не должно быть пустым</small>
+                      </div>
+                        <label for="authors">Авторы</label>
+                        <select multiple="" class="form-select" id="authors" name="authors">
+                          <c:forEach var="author" items="${authors}">
+                              <option value="${author.id}">${author.name} ${author.lastname}. ${author.year}</option>
+                          </c:forEach>
+                        </select>
+                      <div class="form-group mt-3">
+                        <label for="publishedYear">Год издания</label>
+                        <input type="text" class="form-control" id="publishedYear" name="publishedYear" aria-describedby="publishedYear" placeholder="">
+                        <small id="publishedYear" class="form-text text-muted d-none">Это поле не должно быть пустым</small>
+                      </div>
+                      <div class="form-group  mt-3">
+                        <label for="quantity">Количество книг</label>
+                        <input type="text" class="form-control" id="quantity" name="quantity" aria-describedby="quantity" placeholder="">
+                        <small id="quantity" class="form-text text-muted d-none">Это поле не должно быть пустым</small>
+                      </div>
+
+
+                        <button type="submit" class="btn btn-primary mt-4">Добавить книгу</button>
+                    </fieldset>
+               </form>
             </div>
         </div>
-      </c:forEach>
-        
+      </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   </body>

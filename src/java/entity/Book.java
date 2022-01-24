@@ -26,7 +26,7 @@ public class Book implements Serializable{
     private Long id;
     private String caption;
     @OneToOne
-    private List<Author> author;
+    private List<Author> authors;
     private int publishedYear;
     private int quantity;
     private int count;
@@ -43,12 +43,12 @@ public class Book implements Serializable{
         this.caption = caption;
     }
 
-    public List<Author> getAuthor() {
-        return author;
+    public List<Author> getAuthors() {
+        return authors;
     }
 
-    public void setAuthor(List<Author> author) {
-        this.author = author;
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
     }
 
     public int getPublishedYear() {
@@ -79,7 +79,7 @@ public class Book implements Serializable{
     public String toString() {
         return "Book{" 
                 + "caption=" + caption 
-                + ", author=" + Arrays.toString(author.toArray())
+                + ", author=" + Arrays.toString(authors.toArray())
                 + ", publishedYear=" + publishedYear 
                 + ", quantity=" + quantity 
                 + ", count=" + count 
@@ -90,7 +90,7 @@ public class Book implements Serializable{
     public int hashCode() {
         int hash = 7;
         hash = 47 * hash + Objects.hashCode(this.caption);
-        hash = 47 * hash + Objects.hashCode(this.author);
+        hash = 47 * hash + Objects.hashCode(this.authors);
         hash = 47 * hash + this.publishedYear;
         hash = 47 * hash + this.quantity;
         hash = 47 * hash + this.count;
@@ -121,7 +121,7 @@ public class Book implements Serializable{
         if (!Objects.equals(this.caption, other.caption)) {
             return false;
         }
-        if (!Objects.equals(this.author, other.author)) {
+        if (!Objects.equals(this.authors, other.authors)) {
             return false;
         }
         return true;
