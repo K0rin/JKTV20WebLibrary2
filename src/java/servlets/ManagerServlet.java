@@ -25,7 +25,7 @@ import session.BookFacade;
  * @author Melnikov
  */
 @WebServlet(name = "ManagerServlet", urlPatterns = {
-    "/index",
+    
     "/addBook", 
     "/createBook", 
     "/editBook", 
@@ -52,11 +52,7 @@ public class ManagerServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String path = request.getServletPath();
         switch (path) {
-            case "/index":
-                List<Book> books = bookFacade.findAll();
-                request.setAttribute("books", books);
-                request.getRequestDispatcher("/index.jsp").forward(request, response);
-                break;
+            
             case "/addBook":
                 List<Author> authors = authorFacade.findAll();
                 request.setAttribute("authors", authors);

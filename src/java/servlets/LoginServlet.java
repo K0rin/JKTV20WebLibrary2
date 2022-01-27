@@ -5,6 +5,7 @@
  */
 package servlets;
 
+import entity.Book;
 import entity.Reader;
 import entity.Role;
 import entity.User;
@@ -18,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import session.BookFacade;
 import session.ReaderFacade;
 import session.RoleFacade;
 import session.UserFacade;
@@ -28,6 +30,7 @@ import session.UserRolesFacade;
  * @author Melnikov
  */
 @WebServlet(name = "LoginServlet", loadOnStartup = 1, urlPatterns = {
+    "/index.jsp",
     "/showLogin", 
     "/login", 
     "/logout"
@@ -37,6 +40,8 @@ public class LoginServlet extends HttpServlet {
     @EJB private ReaderFacade readerFacade;
     @EJB private RoleFacade roleFacade;
     @EJB private UserRolesFacade userRolesFacade;
+    @EJB private BookFacade bookFacade;
+    
     
     @Override
     public void init() throws ServletException {
@@ -75,6 +80,7 @@ public class LoginServlet extends HttpServlet {
             userRoles.setRole(role);
             userRolesFacade.create(userRoles);
         }
+        
     }
 
     
@@ -95,6 +101,11 @@ public class LoginServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String path = request.getServletPath();
         switch (path) {
+            case "/index.jsp":
+                List<Book> books = bookFacade.findAll();
+                request.setAttribute("books", books);
+                request.getRequestDispatcher("/listBooks.jsp").forward(request, response);
+                break;
             case "/showLogin":
                 
                 request.getRequestDispatcher("/showLogin.jsp").forward(request, response);
