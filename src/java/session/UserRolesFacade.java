@@ -5,7 +5,9 @@
  */
 package session;
 
+import entity.User;
 import entity.UserRoles;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,5 +30,19 @@ public class UserRolesFacade extends AbstractFacade<UserRoles> {
     public UserRolesFacade() {
         super(UserRoles.class);
     }
-    
+    public boolean isRole(String roleName, User user){
+        try {
+            List<String> userRoles = em.createQuery("SELECT ur.role.roleName FROM UserRoles ur WHERE ur.user = :user")
+                    .setParameter("user", user)
+                    .getResultList();
+            if(userRoles.contains(roleName)){
+                return true;
+            }else{
+                return false;
+            }
+                    
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

@@ -44,4 +44,5 @@
         </div>
       </div>
     </nav>
+    <p class="text-success w-100 d-flex justify-content-center">${info}</p>
     <div class="container d-flex justify-content-center">

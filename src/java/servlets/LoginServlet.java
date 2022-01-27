@@ -11,7 +11,6 @@ import entity.Role;
 import entity.User;
 import entity.UserRoles;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -24,6 +23,7 @@ import session.ReaderFacade;
 import session.RoleFacade;
 import session.UserFacade;
 import session.UserRolesFacade;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -107,11 +107,26 @@ public class LoginServlet extends HttpServlet {
                 request.getRequestDispatcher("/listBooks.jsp").forward(request, response);
                 break;
             case "/showLogin":
-                
                 request.getRequestDispatcher("/showLogin.jsp").forward(request, response);
                 break;
             case "/login":
-                
+                String login = request.getParameter("login");
+                String password = request.getParameter("password");
+                //authentification
+                User authUser = userFacade.find(login);
+                if(authUser == null){
+                    request.setAttribute("info", "Нет такого пользователя или неправильный пароль");
+                    request.getRequestDispatcher("/showLogin").forward(request, response);
+                }
+                //authorization
+                if(!password.equals(authUser.getPassword())){
+                    request.setAttribute("info", "Нет такого пользователя или неправильный пароль");
+                    request.getRequestDispatcher("/showLogin").forward(request, response);
+                }
+                HttpSession session = request.getSession(true);
+                session.setAttribute("authUser", authUser);
+                String info = authUser.getReader().getFirstname()+", здравствуйте!";
+                request.setAttribute("info", info);
                 request.getRequestDispatcher("/index.jsp").forward(request, response);
                 break;
             case "/logout":
