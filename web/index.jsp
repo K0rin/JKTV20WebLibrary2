@@ -6,9 +6,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
       <c:forEach var="book" items="${books}">
-          
         <div class="card border-light mb-3" style="max-width: 20rem;">
             <div class="card-header">${book.caption}</div>
             <div class="card-body">
