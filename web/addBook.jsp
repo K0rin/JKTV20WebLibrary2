@@ -4,7 +4,7 @@
     Author     : Melnikov
 --%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
         <div class="card border-light my-5" style="width: 30rem;">

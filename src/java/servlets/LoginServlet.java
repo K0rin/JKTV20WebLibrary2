@@ -24,6 +24,7 @@ import session.RoleFacade;
 import session.UserFacade;
 import session.UserRolesFacade;
 import javax.servlet.http.HttpSession;
+import tools.EncryptPassword;
 
 /**
  *
@@ -41,6 +42,7 @@ public class LoginServlet extends HttpServlet {
     @EJB private RoleFacade roleFacade;
     @EJB private UserRolesFacade userRolesFacade;
     @EJB private BookFacade bookFacade;
+    private EncryptPassword encryptPassword;
     
     
     @Override
@@ -50,7 +52,11 @@ public class LoginServlet extends HttpServlet {
         if(users.isEmpty()){
             User user = new User();
             user.setLogin("admin");
-            user.setPassword("12345");
+            encryptPassword = new EncryptPassword();
+            String salt = encryptPassword.createSalt();
+            user.setSalt(salt);
+            String hashPassword = encryptPassword.createHash("12345", salt);
+            user.setPassword(hashPassword);
             Reader reader = new Reader();
             reader.setFirstname("admin");
             reader.setLastname("admin");
@@ -117,11 +123,20 @@ public class LoginServlet extends HttpServlet {
                 if(authUser == null){
                     request.setAttribute("info", "Нет такого пользователя или неправильный пароль");
                     request.getRequestDispatcher("/showLogin").forward(request, response);
+                    break;
                 }
                 //authorization
-                if(!password.equals(authUser.getPassword())){
+                encryptPassword = new EncryptPassword();
+                String hashPassword = encryptPassword.createHash(password, authUser.getSalt());
+                if(hashPassword == null){
+                    request.setAttribute("info", "Произошла ошибка шифрования. Обратитесь к разработчику");
+                    request.getRequestDispatcher("/showLogin").forward(request, response);
+                    break;
+                }
+                if(!hashPassword.equals(authUser.getPassword())){
                     request.setAttribute("info", "Нет такого пользователя или неправильный пароль");
                     request.getRequestDispatcher("/showLogin").forward(request, response);
+                    break;
                 }
                 HttpSession session = request.getSession(true);
                 session.setAttribute("authUser", authUser);

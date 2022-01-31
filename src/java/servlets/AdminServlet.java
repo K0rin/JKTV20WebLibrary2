@@ -9,8 +9,8 @@ import entity.Author;
 import entity.Book;
 import entity.User;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -19,28 +19,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import session.AuthorFacade;
-import session.BookFacade;
+import session.UserFacade;
 import session.UserRolesFacade;
 
 /**
  *
  * @author Melnikov
  */
-@WebServlet(name = "ManagerServlet", urlPatterns = {
-    
-    "/addBook", 
-    "/createBook", 
-    "/editBook", 
-    "/updateBook", 
-    "/addAuthor", 
-    "/createAuthor"
+@WebServlet(name = "AdminServlet", urlPatterns = {
+    "/editUser",
+    "/updateUser",
+
 })
-public class ManagerServlet extends HttpServlet {
+public class AdminServlet extends HttpServlet {
     
-    @EJB private BookFacade bookFacade;
-    @EJB private AuthorFacade authorFacade;
-    @EJB private UserRolesFacade userRolesFacade;
+@EJB private UserFacade userFacade;
+@EJB private UserRolesFacade userRolesFacade;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -53,7 +47,7 @@ public class ManagerServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        request.setCharacterEncoding("UTF-8");
+       request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession(false);
         if(session == null){
             request.setAttribute("info", "У вас нет прав. Войдите с правами менеджера");
@@ -67,7 +61,7 @@ public class ManagerServlet extends HttpServlet {
             return;
         }
         
-        if(!userRolesFacade.isRole("MANAGER", authUser)){
+        if(!userRolesFacade.isRole("ADMINSTRATOR", authUser)){
             request.setAttribute("info", "У вас нет прав. Войдите с правами менеджера");
             request.getRequestDispatcher("/showLogin").forward(request, response);
             return;
@@ -75,12 +69,12 @@ public class ManagerServlet extends HttpServlet {
         String path = request.getServletPath();
         switch (path) {
             
-            case "/addBook":
-                List<Author> authors = authorFacade.findAll();
-                request.setAttribute("authors", authors);
-                request.getRequestDispatcher("/addBook.jsp").forward(request, response);
+            case "/editUser":
+                List<User> users = userFacade.findAll();
+                request.setAttribute("users", users);
+                request.getRequestDispatcher("/editUser.jsp").forward(request, response);
                 break;
-            case "/createBook":
+            case "/updateUser":
                 String caption = request.getParameter("caption");
                 String[] bookAuthors = request.getParameterValues("authors");
                 String publishedYear = request.getParameter("publishedYear");
@@ -98,30 +92,6 @@ public class ManagerServlet extends HttpServlet {
                 book.setCount(book.getQuantity());
                 bookFacade.create(book);
                 request.getRequestDispatcher("/addBook.jsp").forward(request, response);
-                break;
-            case "/editBook":
-                
-                request.getRequestDispatcher("/editBook.jsp").forward(request, response);
-                break;
-            case "/updateBook":
-                
-                request.getRequestDispatcher("/editBook.jsp").forward(request, response);
-                break;
-            case "/addAuthor":
-                
-                request.getRequestDispatcher("/addAuthor.jsp").forward(request, response);
-                break;
-            case "/createAuthor":
-                
-                request.getRequestDispatcher("/addAuthor.jsp").forward(request, response);
-                break;
-            case "/editAuthor":
-                
-                request.getRequestDispatcher("/editAuthor.jsp").forward(request, response);
-                break;
-            case "/updateAuthor":
-                
-                request.getRequestDispatcher("/editAuthor.jsp").forward(request, response);
                 break;
             
         }

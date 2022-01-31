@@ -24,6 +24,7 @@ public class User implements Serializable {
     private Long id;
     private String login;
     private String password;
+    private String salt;
     private Reader reader;
 
     public User() {
@@ -107,6 +108,14 @@ public class User implements Serializable {
                 + ", reader=" + reader.getFirstname()
                 + " " + reader.getLastname()
                 + '}';
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     
