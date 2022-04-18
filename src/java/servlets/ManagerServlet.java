@@ -100,12 +100,28 @@ public class ManagerServlet extends HttpServlet {
                 request.getRequestDispatcher("/addBook.jsp").forward(request, response);
                 break;
             case "/editBook":
-                
+                String bookId = request.getParameter("bookId");
+                book = bookFacade.find(Long.parseLong(bookId));
+                request.setAttribute("book", book);
                 request.getRequestDispatcher("/editBook.jsp").forward(request, response);
                 break;
             case "/updateBook":
-                
-                request.getRequestDispatcher("/editBook.jsp").forward(request, response);
+                String newBookId = request.getParameter("bookId");
+                String newCaption = request.getParameter("caption");
+                String[] newAuthors = request.getParameterValues("listAuthors");
+                String newPublishedYear = request.getParameter("publishedYear");
+                String newQuantity = request.getParameter("quantity");
+                Book editBook = bookFacade.find(Long.parseLong(newBookId));
+                editBook.setCaption(newCaption);
+                List<Author> newListAuthors = new ArrayList<>();
+                for(String authorId : newAuthors){
+                    newListAuthors.add(authorFacade.find(Long.parseLong(authorId)));
+                }
+                editBook.setAuthors(newListAuthors);
+                editBook.setPublishedYear(Integer.parseInt(newPublishedYear));
+                editBook.setQuantity(Integer.parseInt(newQuantity));
+                bookFacade.edit(editBook);
+                request.getRequestDispatcher("/listBooks").forward(request, response);
                 break;
             case "/addAuthor":
                 

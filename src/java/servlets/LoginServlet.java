@@ -34,7 +34,9 @@ import tools.EncryptPassword;
     "/index.jsp",
     "/showLogin", 
     "/login", 
-    "/logout"
+    "/logout",
+    "/listBooks",
+    
 })
 public class LoginServlet extends HttpServlet {
     @EJB private UserFacade userFacade;
@@ -152,7 +154,11 @@ public class LoginServlet extends HttpServlet {
                 }
                 request.getRequestDispatcher("/index.jsp").forward(request, response);
                 break;
-            
+            case "/listBooks":
+                List<Book> listBooks = bookFacade.findAll();
+                request.setAttribute("books", listBooks);
+                request.getRequestDispatcher("/listBooks.jsp").forward(request, response);
+                break;
         }
     }
 

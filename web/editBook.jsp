@@ -1,0 +1,44 @@
+<%-- 
+    Document   : index
+    Created on : Jan 20, 2022, 2:22:05 PM
+    Author     : Melnikov
+--%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+        <div class="card border-light my-5" style="width: 30rem;">
+            <div class="card-body">
+                <form action="updateBook" method="POST" multiple>
+                    <fieldset>
+                      <legend>Добавление книги</legend>
+                      <div class="form-group mb-3">
+                        <label for="caption">Название книги</label>
+                        <input type="hidden" name="bookId" value="${book.id}">
+                        <input type="text" class="form-control" id="caption" name="caption" aria-describedby="caption" placeholder="" value="${book.caption}">
+                        <small id="caption" class="form-text text-muted d-none">Это поле не должно быть пустым</small>
+                      </div>
+                        <label for="authors">Авторы</label>
+                        <select multiple="multiple" class="form-select" id="authors" name="listAuthors">
+                          <c:forEach var="author" items="${book.authors}">
+                              <option value="${author.id}">${author.name} ${author.lastname}. ${author.year}</option>
+                          </c:forEach>
+                        </select>
+                      <div class="form-group mt-3">
+                        <label for="publishedYear">Год издания</label>
+                        <input type="text" class="form-control" id="publishedYear" name="publishedYear" aria-describedby="publishedYear" placeholder="" value="${book.publishedYear}">
+                        <small id="publishedYear" class="form-text text-muted d-none">Это поле не должно быть пустым</small>
+                      </div>
+                      <div class="form-group  mt-3">
+                        <label for="quantity">Количество книг</label>
+                        <input type="text" class="form-control" id="quantity" name="quantity" aria-describedby="quantity" placeholder="" value="${book.quantity}">
+                        <small id="quantity" class="form-text text-muted d-none">Это поле не должно быть пустым</small>
+                      </div>
+
+
+                        <button type="submit" class="btn btn-primary mt-4">Добавить книгу</button>
+                    </fieldset>
+               </form>
+            </div>
+        </div>
+     

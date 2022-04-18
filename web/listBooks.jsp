@@ -4,7 +4,7 @@
     Author     : Melnikov
 --%>
 
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
       <c:forEach var="book" items="${books}">
         <div class="card border-light mb-3" style="max-width: 20rem;">
@@ -12,10 +12,12 @@
             <div class="card-body">
               <h4 class="card-title">
                 <c:forEach var="author" items="${book.authors}">
-                    ${author.name} ${author.lastname}. ${author.year}.&nbsp;
+                    ${author.name} ${author.lastname}. ${author.year}. 
                 </c:forEach>
               </h4>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <p class="card-text">${book.publishedYear}</p>
+                <a class="card-body" href="editBook?bookId=${book.id}">Редактировать</a>
+              <p class="card-text"></p>
             </div>
         </div>
       </c:forEach>
