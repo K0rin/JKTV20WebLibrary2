@@ -36,6 +36,9 @@ import tools.EncryptPassword;
     "/login", 
     "/logout",
     "/listBooks",
+    "/showRegistration",
+    "/registration",
+    
     
 })
 public class LoginServlet extends HttpServlet {
@@ -159,6 +162,71 @@ public class LoginServlet extends HttpServlet {
                 request.setAttribute("books", listBooks);
                 request.getRequestDispatcher("/listBooks.jsp").forward(request, response);
                 break;
+            case "/showRegistration":
+                request.getRequestDispatcher("/showRegistration.jsp").forward(request, response);
+                break;
+            case "/registration":
+                String firstname = request.getParameter("firstname");
+                String lastname = request.getParameter("lastname");
+                String phone = request.getParameter("phone");
+                login = request.getParameter("login");
+                String password1 = request.getParameter("password1");
+                String password2 = request.getParameter("password2");
+                if("".equals(firstname) || "".equals(lastname)
+                        || "".equals(phone) || "".equals(login)
+                          || "".equals(password1) || "".equals(password2)){
+                    request.setAttribute("firstname", firstname);
+                    request.setAttribute("lastname", lastname);
+                    request.setAttribute("phone", phone);
+                    request.setAttribute("login", login);
+                    request.setAttribute("password1", password1);
+                    request.setAttribute("password2", password2);
+                    request.setAttribute("info", "Заполните все поля");
+                    request.getRequestDispatcher("/showRegistration.jsp").forward(request, response);
+                    break;
+                }
+                if(!password1.equals(password2)){
+                    request.setAttribute("firstname", firstname);
+                    request.setAttribute("lastname", lastname);
+                    request.setAttribute("phone", phone);
+                    request.setAttribute("login", login);
+                    request.setAttribute("info", "Пароли не совпадают");
+                    request.getRequestDispatcher("/showRegistration.jsp").forward(request, response);
+                    break;
+                }
+   
+            Reader reader = new Reader();
+            reader.setFirstname(firstname);
+            reader.setLastname(lastname);
+            reader.setPhone(phone);
+            readerFacade.create(reader);
+            newUser = new User();
+            newUser.setLogin(login);
+            encryptPassword = new EncryptPassword();
+            newUser.setSalt(encryptPassword.createSalt());
+            newUser.setReader(reader);
+            userFacade.create(user);
+            Role role = new Role();
+            role.setRoleName("ADMINISTRATOR");
+            roleFacade.create(role);
+            UserRoles userRoles = new UserRoles();
+            userRoles.setUser(user);
+            userRoles.setRole(role);
+            userRolesFacade.create(userRoles);
+            role = new Role();
+            role.setRoleName("MANAGER");
+            roleFacade.create(role);
+            userRoles = new UserRoles();
+            userRoles.setUser(user);
+            userRoles.setRole(role);
+            userRolesFacade.create(userRoles);
+            role = new Role();
+            role.setRoleName("READER");
+            roleFacade.create(role);
+            userRoles = new UserRoles();
+            userRoles.setUser(user);
+            userRoles.setRole(role);
+            userRolesFacade.create(userRoles);
         }
     }
 

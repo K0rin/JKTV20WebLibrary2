@@ -38,4 +38,10 @@ public class UserFacade extends AbstractFacade<User> {
         }
     }
     
+//    public User findByLogin(String login) {
+//        try{
+//            
+//        }
+//    }
+    
 }

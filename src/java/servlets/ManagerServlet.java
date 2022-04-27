@@ -11,7 +11,9 @@ import entity.User;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -103,17 +105,40 @@ public class ManagerServlet extends HttpServlet {
                 request.getRequestDispatcher("/addBook.jsp").forward(request, response);
                 break;
             case "/editBook":
+                
                 String bookId = request.getParameter("bookId");
                 book = bookFacade.find(Long.parseLong(bookId));
+                
+                Map<Author, String> authorsMap = new HashMap <>();
+                List<Author> listAuthors = authorFacade.findAll();
+                for(Author author : listAuthors){
+                    if(book.getAuthors().contains(author)){
+                        authorsMap.put(author, "selected");
+                    }else{
+                        authorsMap.put(author, "");
+                    }
+                }
+                request.setAttribute("authorsMap", authorsMap);
                 request.setAttribute("book", book);
                 request.getRequestDispatcher("/editBook.jsp").forward(request, response);
                 break;
             case "/updateBook":
+                
                 String newBookId = request.getParameter("bookId");
                 String newCaption = request.getParameter("caption");
                 String[] newAuthors = request.getParameterValues("listAuthors");
                 String newPublishedYear = request.getParameter("publishedYear");
                 String newQuantity = request.getParameter("quantity");
+                if("".equals(newBookId) || newBookId == null || 
+                        "".equals(newCaption) || newCaption == null || 
+                         newAuthors == null || newAuthors.length == 0 ||
+                        "".equals(newPublishedYear) || newPublishedYear == null ||
+                        "".equals(newQuantity) || newQuantity == null ||
+                        "".equals(newBookId) || newBookId == null){
+                    request.setAttribute("info", "Заполните все поля (выберите авторов)");
+                    request.getRequestDispatcher("/editBook.jsp").forward(request, response);
+                    break;
+                }
                 Book editBook = bookFacade.find(Long.parseLong(newBookId));
                 editBook.setCaption(newCaption);
                 List<Author> newListAuthors = new ArrayList<>();
@@ -191,6 +216,7 @@ public class ManagerServlet extends HttpServlet {
                 request.setAttribute("info", "Автор обновлен");
                 request.getRequestDispatcher("/addAuthor").forward(request, response);
                 break;
+            
             
         }
         
