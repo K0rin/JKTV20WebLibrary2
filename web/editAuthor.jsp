@@ -6,38 +6,40 @@
 
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
         <div class="card border-light my-5" style="width: 30rem;">
             <div class="card-body">
-                <form action="createBook" method="POST">
+                <form action="updateAuthor" method="POST">
                     <fieldset>
-                      <legend>Добавление книги</legend>
+                      <legend>Редактирование автора</legend>
                       <div class="form-group mb-3">
-                        <label for="caption">Название книги</label>
-                        <input type="text" class="form-control" id="caption" name="caption" aria-describedby="caption" placeholder="">
+                        <label for="name">Имя</label>
+                        <input type="hidden" name="authorId" value="${author.id}">
+                        <input type="text" class="form-control" id="name" name="name" aria-describedby="name" placeholder="" value="${author.name}">
                         <small id="caption" class="form-text text-muted d-none">Это поле не должно быть пустым</small>
                       </div>
-                        <label for="authors">Авторы</label>
-                        <select multiple="" class="form-select" id="authors" name="authors">
-                          <c:forEach var="author" items="${authors}">
-                              <option value="${author.id}">${author.name} ${author.lastname}. ${author.year}</option>
-                          </c:forEach>
-                        </select>
+                        
                       <div class="form-group mt-3">
-                        <label for="publishedYear">Год издания</label>
-                        <input type="text" class="form-control" id="publishedYear" name="publishedYear" aria-describedby="publishedYear" placeholder="">
+                        <label for="lastname">Фамилия</label>
+                        <input type="text" class="form-control" id="lastname" name="lastname" aria-describedby="lastname" placeholder="" value="${author.lastname}">
                         <small id="publishedYear" class="form-text text-muted d-none">Это поле не должно быть пустым</small>
                       </div>
                       <div class="form-group  mt-3">
-                        <label for="quantity">Количество книг</label>
-                        <input type="text" class="form-control" id="quantity" name="quantity" aria-describedby="quantity" placeholder="">
+                        <label for="year">Год рождения</label>
+                        <input type="text" class="form-control" id="year" name="year" aria-describedby="year" placeholder="" value="${author.year}">
                         <small id="quantity" class="form-text text-muted d-none">Это поле не должно быть пустым</small>
                       </div>
-
-
-                        <button type="submit" class="btn btn-primary mt-4">Добавить книгу</button>
+                      <div class="form-group  mt-3">
+                        <label for="day">День рождения</label>
+                        <input type="text" class="form-control" id="day" name="day" aria-describedby="day" placeholder="" value="${author.day}">
+                        <small id="quantity" class="form-text text-muted d-none">Это поле не должно быть пустым</small>
+                      </div>
+                      <div class="form-group  mt-3">
+                        <label for="month">Месяц рождения</label>
+                        <input type="text" class="form-control" id="month" name="month" aria-describedby="month" placeholder="" value="${author.month}">
+                        <small id="quantity" class="form-text text-muted d-none">Это поле не должно быть пустым</small>
+                      </div>
+                        <button type="submit" class="btn btn-primary mt-4">Изменить автора</button>
                     </fieldset>
                </form>
             </div>
         </div>
-     
