@@ -30,19 +30,12 @@ import session.UserRolesFacade;
  *
  * @author Melnikov
  */
-@WebServlet(name = "ManagerServlet", urlPatterns = {
+@WebServlet(name = "UserServlet", urlPatterns = {
     
-    "/addBook", 
-    "/createBook", 
-    "/editBook", 
-    "/updateBook", 
-    "/addAuthor", 
-    "/createAuthor",
-    "/editAuthor",
-    "/updateAuthor",
+    "/editUser", 
     
 })
-public class ManagerServlet extends HttpServlet {
+public class UserServlet extends HttpServlet {
     
     @EJB private BookFacade bookFacade;
     @EJB private AuthorFacade authorFacade;
@@ -62,19 +55,19 @@ public class ManagerServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession(false);
         if(session == null){
-            request.setAttribute("info", "У вас нет прав. Войдите с правами менеджера");
+            request.setAttribute("info", "Вы не авторизиваны");
             request.getRequestDispatcher("/showLogin").forward(request, response);
             return;
         }
         User authUser = (User) session.getAttribute("authUser");
         if(authUser == null){
-            request.setAttribute("info", "У вас нет прав. Войдите с правами менеджера");
+            request.setAttribute("info", "Вы не авторизировались");
             request.getRequestDispatcher("/showLogin").forward(request, response);
             return;
         }
         
         if(!userRolesFacade.isRole("MANAGER", authUser)){
-            request.setAttribute("info", "У вас нет прав. Войдите с правами менеджера");
+            request.setAttribute("info", "Войдите в свой аккаунт чтобы изменить свои данные");
             request.getRequestDispatcher("/showLogin").forward(request, response);
             return;
         }

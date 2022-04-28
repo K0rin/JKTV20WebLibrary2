@@ -45,4 +45,20 @@ public class UserRolesFacade extends AbstractFacade<UserRoles> {
             return false;
         }
     }
+    
+    public String getTopRoles(User user){
+        List<String> listRoles = em.createQuery("SELECT ur.role.roleName FROM UserRoles ur WHERE ur.user=:user")
+                .setParameter("user", user)
+                .getResultList();
+        if(listRoles.contains("ADMINISTRATOR")){
+            return "ADMINISTRATOR";
+        }else if(listRoles.contains("MANAGER")){
+            return "MANAGER";
+        }else if(listRoles.contains("READER")){
+            return "READER";
+        }else{
+            return null;
+        }
+
+    }
 }

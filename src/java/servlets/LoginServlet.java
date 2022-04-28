@@ -145,6 +145,7 @@ public class LoginServlet extends HttpServlet {
                 }
                 HttpSession session = request.getSession(true);
                 session.setAttribute("authUser", authUser);
+                session.setAttribute("role", userRolesFacade.getTopRoles(authUser));
                 String info = authUser.getReader().getFirstname()+", здравствуйте!";
                 request.setAttribute("info", info);
                 response.sendRedirect(request.getHeader("referer"));
