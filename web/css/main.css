@@ -1,0 +1,17 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : May 2, 2022, 9:02:55 AM
+    Author     : pupil
+*/
+.content {
+  min-height: 100vh;
+  flex-grow: 1;
+}
+.footer{
+    min-height: 50px;
+}
+

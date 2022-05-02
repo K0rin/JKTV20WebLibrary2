@@ -28,8 +28,8 @@ import session.UserRolesFacade;
  * @author Melnikov
  */
 @WebServlet(name = "AdminServlet", urlPatterns = {
-    "/editUser",
-    "/updateUser",
+    "/editUser1",
+    "/updateUser1",
 
 })
 public class AdminServlet extends HttpServlet {
@@ -72,12 +72,12 @@ public class AdminServlet extends HttpServlet {
         String path = request.getServletPath();
         switch (path) {
             
-            case "/editUser":
+            case "/editUser1":
                 List<User> users = userFacade.findAll();
                 request.setAttribute("users", users);
                 request.getRequestDispatcher("/editUser.jsp").forward(request, response);
                 break;
-            case "/updateUser":
+            case "/updateUser1":
                 
                 request.getRequestDispatcher("/editUser.jsp").forward(request, response);
                 break;

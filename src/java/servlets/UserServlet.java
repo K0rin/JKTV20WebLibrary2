@@ -7,12 +7,15 @@ package servlets;
 
 import entity.Author;
 import entity.Book;
+import entity.History;
 import entity.Reader;
 import entity.User;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import session.AuthorFacade;
 import session.BookFacade;
+import session.HistoryFacade;
 import session.ReaderFacade;
 import session.UserFacade;
 import session.UserRolesFacade;
@@ -36,7 +40,9 @@ import tools.EncryptPassword;
  */
 @WebServlet(name = "UserServlet", urlPatterns = {
     
-    "/editUser", 
+    "/editUser",
+    "/updateUser",
+    "/buyBook",
     
 })
 public class UserServlet extends HttpServlet {
@@ -44,6 +50,8 @@ public class UserServlet extends HttpServlet {
     @EJB private UserFacade userFacade;
     @EJB private ReaderFacade readerFacade;
     @EJB private UserRolesFacade userRolesFacade;
+    @EJB private BookFacade bookFacade;
+    @EJB private HistoryFacade historyFacade;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -88,6 +96,7 @@ public class UserServlet extends HttpServlet {
                 String firstname = request.getParameter("firstname");
                 String lastname = request.getParameter("lastname");
                 String phone = request.getParameter("phone");
+                String money = request.getParameter("money");
                 
                 String password1 = request.getParameter("password1");
                 String password2 = request.getParameter("password2");
@@ -95,6 +104,7 @@ public class UserServlet extends HttpServlet {
                     request.setAttribute("firstname", firstname);
                     request.setAttribute("lastname", lastname);
                     request.setAttribute("phone", phone);
+                    request.setAttribute("money", money);
                     
                     request.setAttribute("info", "Пароли не совпадают!");
                     request.getRequestDispatcher("/showRegistration").forward(request, response);
@@ -107,6 +117,7 @@ public class UserServlet extends HttpServlet {
                     request.setAttribute("firstname", firstname);
                     request.setAttribute("lastname", lastname);
                     request.setAttribute("phone", phone);
+                    request.setAttribute("money", money);
                     
                     request.setAttribute("info", "Заполните все поля!");
                     request.getRequestDispatcher("/showRegistration").forward(request, response);
@@ -117,6 +128,7 @@ public class UserServlet extends HttpServlet {
                 reader.setFirstname(firstname);
                 reader.setLastname(lastname);
                 reader.setPhone(phone);
+                reader.setMoney(new BigDecimal(money));
                 readerFacade.edit(reader);
                 if(!"".equals(password1) && !"".equals(password2)){
                     EncryptPassword ep = new EncryptPassword();
@@ -128,7 +140,32 @@ public class UserServlet extends HttpServlet {
                 session.setAttribute("authUser", user);
                 request.setAttribute("user", user);
                 request.setAttribute("info", "Изменение данных успешно");
-                request.getRequestDispatcher("/editUser.jsp").forward(request, response);
+                request.getRequestDispatcher("/editUser").forward(request, response);
+                break;
+            case "/buyBook":
+                String bookId = request.getParameter("bookId");
+                Book book = bookFacade.find(Long.parseLong(bookId));
+                user = userFacade.find(authUser.getId());
+                if(user.getReader().getMoney()==null){
+                    request.setAttribute("info", "Not enough money");
+                    request.getRequestDispatcher("/index.jsp").forward(request, response);
+                    break;
+                }
+                if(user.getReader().getMoney().compareTo(book.getPrice()) < 0 ){
+                    request.setAttribute("info", "Not enough money");
+                    request.getRequestDispatcher("/index.jsp").forward(request, response);
+                    break;
+                }
+                History history = new History();
+                history.setBook(book);
+                history.setReader(user.getReader());
+                history.getReader().setMoney(user.getReader().getMoney().subtract(book.getPrice()));
+                history.setSellingDate(new GregorianCalendar().getTime());
+                historyFacade.create(history);
+                readerFacade.edit(user.getReader());
+                request.setAttribute("info", "Покупка совершена успешно");
+                request.getRequestDispatcher("/index.jsp").forward(request, response);
+                
                 break;
             
             
