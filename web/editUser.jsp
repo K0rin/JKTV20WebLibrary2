@@ -11,42 +11,40 @@
             <div class="card-body">
                 <form action="updateUser" method="POST">
                     <fieldset>
-                      <legend>Редактирование пользователя</legend>
-                      <div class="form-group">
-                        <label for="users">Пользователи</label>
-                        <select class="form-select" id="users">
-                          <c:forEach var="user" items="${users}">
-                              <option value="${user.id}">${user.firstname} ${user.lastname}</option>
-                          </c:forEach>
-                        </select>
-                      </div>
+                      <legend>Редактирование данных пользователя</legend>
                       <div class="form-group mb-3">
                         <label for="firstname">Имя</label>
-                        <input type="text" class="form-control" id="firstname" name="firstname" aria-describedby="firstname" placeholder="">
+                        <input type="hidden" name="userId" value="${user.id}">
+                        <input type="text" class="form-control" id="firstname" name="firstname" aria-describedby="firstname" placeholder=""  value="${user.reader.firstname}">
                         <small id="firstname" class="form-text text-muted d-none">Это поле не должно быть пустым</small>
                       </div>
                       <div class="form-group mb-3">
                         <label for="lastname">Фамилия</label>
-                        <input type="text" class="form-control" id="lastname" name="lastname" aria-describedby="lastname" placeholder="">
+                        <input type="text" class="form-control" id="lastname" name="lastname" aria-describedby="lastname" placeholder=""   value="${user.reader.lastname}">
                         <small id="lastname" class="form-text text-muted d-none">Это поле не должно быть пустым</small>
                       </div>
                       <div class="form-group mb-3">
                         <label for="phone">Телефон</label>
-                        <input type="text" class="form-control" id="phone" name="phone" aria-describedby="phone" placeholder="">
+                        <input type="text" class="form-control" id="phone" name="phone" aria-describedby="phone" placeholder=""  value="${user.reader.phone}">
                         <small id="phone" class="form-text text-muted d-none">Это поле не должно быть пустым</small>
                       </div>
                       <div class="form-group mb-3">
                         <label for="login">Логин</label>
-                        <input type="text" class="form-control" id="login" name="login" aria-describedby="login" placeholder="">
+                        <input type="text" class="form-control" readonly id="login" name="login" aria-describedby="login" placeholder="" value="${user.login}">
                         <input type="hidden"  id="id" name="id">
                         <small id="login" class="form-text text-muted d-none">Это поле не должно быть пустым</small>
                       </div>
                       <div class="form-group mb-3">
-                        <label for="password">Пароль</label>
-                        <input type="text" class="form-control" id="password" name="password" aria-describedby="password" placeholder="">
-                        <small id="password" class="form-text text-muted d-none">Это поле не должно быть пустым</small>
+                        <label for="password1">Пароль</label>
+                        <input type="text" class="form-control" id="password1" name="password1" aria-describedby="password" placeholder="">
+                        <small id="password1" class="form-text text-muted d-none">Это поле не должно быть пустым</small>
                       </div>
-                        <button type="submit" class="btn btn-primary mt-4">Изменить</button>
+                      <div class="form-group mb-3">
+                        <label for="password2">Повторите пароль</label>
+                        <input type="text" class="form-control" id="password2" name="password2" aria-describedby="password" placeholder="">
+                        <small id="password2" class="form-text text-muted d-none">Это поле не должно быть пустым</small>
+                      </div>
+                        <button type="submit" class="btn btn-primary mt-4">Изменить данные</button>
                     </fieldset>
                </form>
             </div>

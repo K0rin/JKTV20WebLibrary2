@@ -108,7 +108,7 @@ public class ManagerServlet extends HttpServlet {
                 
                 String bookId = request.getParameter("bookId");
                 book = bookFacade.find(Long.parseLong(bookId));
-                
+                request.setAttribute("book", book);
                 Map<Author, String> authorsMap = new HashMap <>();
                 List<Author> listAuthors = authorFacade.findAll();
                 for(Author author : listAuthors){
@@ -119,7 +119,7 @@ public class ManagerServlet extends HttpServlet {
                     }
                 }
                 request.setAttribute("authorsMap", authorsMap);
-                request.setAttribute("book", book);
+                
                 request.getRequestDispatcher("/editBook.jsp").forward(request, response);
                 break;
             case "/updateBook":
