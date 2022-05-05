@@ -33,6 +33,11 @@
                         <input type="text" class="form-control" id="price" name="price" aria-describedby="price" placeholder="">
                         <small id="price" class="form-text text-muted d-none">Это поле не должно быть пустым</small>
                       </div>
+                      <div class="form-group  mt-3">
+                        <label for="price">Изображение</label>
+                        <input type="text" class="form-control" id="price" name="price" aria-describedby="price" placeholder="">
+                        <small id="price" class="form-text text-muted d-none">Это поле не должно быть пустым</small>
+                      </div>
 
 
                         <button type="submit" class="btn btn-primary mt-4">Добавить книгу</button>

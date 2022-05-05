@@ -24,7 +24,8 @@ public class Reader implements Serializable{
     private String firstname;
     private String lastname;
     private String phone;
-    private BigDecimal money;
+    private String money;
+    
    
     public Reader() {
     }
@@ -53,12 +54,20 @@ public class Reader implements Serializable{
         this.phone = phone;
     }
 
-    public BigDecimal getMoney() {
+    public String getMoney() {
         return money;
     }
 
-    public void setMoney(BigDecimal money) {
+    public void setMoney(String money) {
         this.money = money;
+    }
+    
+    public BigDecimal getDecimalMoney() {
+        return new BigDecimal (money);
+    }
+
+    public void setDecimalMoney(BigDecimal money) {
+        this.money = money.toString();
     }
 
     @Override

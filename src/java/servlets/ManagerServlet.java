@@ -100,7 +100,7 @@ public class ManagerServlet extends HttpServlet {
                 }
                 book.setAuthors(listBookAuthors);
                 book.setPublishedYear(Integer.parseInt(publishedYear));
-                book.setPrice(new BigDecimal(price));
+                book.setPrice(price);
                 bookFacade.create(book);
                 request.getRequestDispatcher("/addBook.jsp").forward(request, response);
                 break;
@@ -147,7 +147,7 @@ public class ManagerServlet extends HttpServlet {
                 }
                 editBook.setAuthors(newListAuthors);
                 editBook.setPublishedYear(Integer.parseInt(newPublishedYear));
-                editBook.setPrice(new BigDecimal(newPrice));
+                editBook.setPrice(newPrice);
                 bookFacade.edit(editBook);
                 request.getRequestDispatcher("/listBooks").forward(request, response);
                 break;
